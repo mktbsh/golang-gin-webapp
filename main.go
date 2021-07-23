@@ -1,15 +1,19 @@
 package main
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
 	r := gin.Default()
+	r.LoadHTMLGlob("views/*.html")
+	r.Use(static.Serve("/assets", static.LocalFile("./assets", true)))
 
-	r.GET("/hello", func(c *gin.Context) {
-		c.String(200, "Hello World")
+	r.GET("/", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "index.html", gin.H{})
 	})
 
 	api := r.Group("/api")
@@ -19,9 +23,6 @@ func main() {
 			"status": "success",
 		})
 	})
-
-	r.Use(static.Serve("/", static.LocalFile("./views", true)))
-	r.Use(static.Serve("/assets", static.LocalFile("./assets", true)))
 
 	r.Run()
 }
