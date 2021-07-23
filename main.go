@@ -21,6 +21,7 @@ func main() {
 	})
 
 	r.Use(static.Serve("/", static.LocalFile("./views", true)))
+	r.Use(static.Serve("/assets", static.LocalFile("./assets", true)))
 
 	r.Run()
 }
